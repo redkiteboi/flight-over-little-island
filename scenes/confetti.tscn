@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmhbxsekm42vl"]
+
+[sub_resource type="Curve" id="Curve_hqgwo"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_8h71h"]
+curve = SubResource("Curve_hqgwo")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l21tq"]
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 90.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+angular_velocity_min = -1.0
+angular_velocity_max = 1.0
+gravity = Vector3(0, 98, 0)
+color = Color(1, 0, 0, 1)
+alpha_curve = SubResource("CurveTexture_8h71h")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[sub_resource type="Gradient" id="Gradient_yi54r"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nh3k3"]
+gradient = SubResource("Gradient_yi54r")
+width = 2
+height = 2
+
+[node name="Confetti" type="GPUParticles2D"]
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_l21tq")
+texture = SubResource("GradientTexture2D_nh3k3")
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+visibility_rect = Rect2(-150, -150, 300, 300)
+local_coords = true

@@ -1,0 +1,257 @@
+[gd_scene load_steps=18 format=3 uid="uid://beg1lhknv7uvx"]
+
+[ext_resource type="Script" path="res://scripts/level.gd" id="1_4qne5"]
+[ext_resource type="PackedScene" uid="uid://cycj8kg714kx6" path="res://scenes/player.tscn" id="1_ww345"]
+[ext_resource type="PackedScene" uid="uid://dfx1lo8cjveo0" path="res://scenes/spawner.tscn" id="3_iuhwm"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="4_6yp7r"]
+[ext_resource type="Theme" uid="uid://c387fro1kglks" path="res://default_theme.tres" id="5_ehcgw"]
+[ext_resource type="AudioStream" uid="uid://ceuv4iruxcyn7" path="res://assets/music/pixel_sprinter_loop.ogg" id="5_f0udh"]
+[ext_resource type="AudioStream" uid="uid://bmpd4lrfuw82d" path="res://assets/sfx/jingle.wav" id="6_j2n5u"]
+[ext_resource type="Texture2D" uid="uid://bwiqe80bgqbjf" path="res://assets/textures/clouds_front.png" id="8_8d154"]
+[ext_resource type="Script" path="res://scripts/parallax.gd" id="8_nd6re"]
+[ext_resource type="AudioStream" uid="uid://b5xni6ck8wevv" path="res://assets/sfx/cooldown_short.wav" id="8_ned8e"]
+[ext_resource type="Script" path="res://scripts/music.gd" id="8_w4x7d"]
+[ext_resource type="Texture2D" uid="uid://by4fdwher1ajh" path="res://assets/textures/sky_clouds_test.png" id="9_c77be"]
+[ext_resource type="Texture2D" uid="uid://bbutfw7xnjdxl" path="res://assets/textures/background.png" id="10_cfa38"]
+[ext_resource type="PackedScene" uid="uid://cmhbxsekm42vl" path="res://scenes/confetti.tscn" id="11_w8qma"]
+
+[sub_resource type="Animation" id="Animation_uwyb4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/MainMenu/Label:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_cx328"]
+resource_name = "blink"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/MainMenu/Label:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iyaju"]
+_data = {
+"RESET": SubResource("Animation_uwyb4"),
+"blink": SubResource("Animation_cx328")
+}
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_4qne5")
+time = 68.5
+
+[node name="Player" parent="." instance=ExtResource("1_ww345")]
+z_index = 1
+position = Vector2(50, 80)
+
+[node name="SpawnerTop" parent="." instance=ExtResource("3_iuhwm")]
+position = Vector2(320, 66)
+
+[node name="SpawnerBottom" parent="." instance=ExtResource("3_iuhwm")]
+position = Vector2(320, 102)
+delay = 0.5
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("4_6yp7r")
+
+[node name="MainMenu" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ehcgw")
+
+[node name="Title" type="Label" parent="UI/MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -88.0
+offset_top = 15.0
+offset_right = 88.0
+offset_bottom = 38.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLarge"
+text = "Flight over
+Little Island"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="UI/MainMenu"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -88.0
+offset_top = -35.0
+offset_right = 88.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"HeaderMedium"
+text = "Press START to play!"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MainMenu"]
+root_node = NodePath("../../..")
+libraries = {
+"": SubResource("AnimationLibrary_iyaju")
+}
+autoplay = "blink"
+speed_scale = 1.167
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ehcgw")
+
+[node name="Score" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -44.0
+offset_top = 2.0
+offset_right = -1.0
+offset_bottom = 25.0
+grow_horizontal = 0
+text = "0"
+horizontal_alignment = 2
+
+[node name="Time" type="Label" parent="UI/HUD"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 47.0
+offset_bottom = 25.0
+text = "0"
+
+[node name="Results" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_ehcgw")
+
+[node name="Title" type="Label" parent="UI/Results"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.0
+offset_top = -40.0
+offset_right = 69.0
+offset_bottom = -8.99999
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HeaderLarge"
+text = "Final Score"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Label" parent="UI/Results"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HeaderLarge"
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Jingle" type="AudioStreamPlayer" parent="UI"]
+stream = ExtResource("6_j2n5u")
+volume_db = -12.0
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_f0udh")
+volume_db = -10.0
+autoplay = true
+script = ExtResource("8_w4x7d")
+
+[node name="Countdown" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_ned8e")
+volume_db = -12.0
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ParallaxForeground" type="ParallaxBackground" parent="."]
+layer = 2
+script = ExtResource("8_nd6re")
+speed = 160.0
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxForeground"]
+motion_scale = Vector2(2, 2)
+motion_mirroring = Vector2(240, 0)
+
+[node name="CloudsFront" type="Sprite2D" parent="ParallaxForeground/ParallaxLayer"]
+position = Vector2(120, 86.845)
+texture = ExtResource("8_8d154")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+layer = -1
+script = ExtResource("8_nd6re")
+speed = 30.0
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(240, 0)
+
+[node name="Clouds" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(120, 80)
+texture = ExtResource("9_c77be")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -2
+
+[node name="Confetti" parent="Background" instance=ExtResource("11_w8qma")]
+z_index = -99
+position = Vector2(121, 77)
+emitting = true
+one_shot = false
+
+[node name="Background" type="Sprite2D" parent="Background"]
+texture = ExtResource("10_cfa38")
+centered = false
+
+[connection signal="timeout" from="Timer" to="." method="_time_over"]

@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://cycj8kg714kx6"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_i3vxp"]
+[ext_resource type="PackedScene" uid="uid://clotrqcf2p74u" path="res://scenes/projectile.tscn" id="2_ov4ov"]
+[ext_resource type="Texture2D" uid="uid://dww2qwllkoamj" path="res://assets/textures/plane_sprite_sheet.png" id="3_j7i84"]
+[ext_resource type="AudioStream" uid="uid://d3ne74ijmthoo" path="res://assets/sfx/gunshot.wav" id="4_pv74y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d76r5"]
+size = Vector2(26, 20.5)
+
+[sub_resource type="Animation" id="Animation_wofpg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_np82i"]
+resource_name = "idle"
+length = 2.0
+loop_mode = 1
+step = 0.1667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1667, 0.3334, 0.5001, 0.6668, 0.8335, 1.0002, 1.1669, 1.3336, 1.5003, 1.667, 1.8337, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 0, 1, 2, 3, 4, 5, 3, 4, 5, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ftmi"]
+_data = {
+"RESET": SubResource("Animation_wofpg"),
+"idle": SubResource("Animation_np82i")
+}
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_i3vxp")
+speed = 125.0
+projectile = ExtResource("2_ov4ov")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+texture = ExtResource("3_j7i84")
+hframes = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3.25)
+shape = SubResource("RectangleShape2D_d76r5")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_pv74y")
+volume_db = -6.0
+pitch_scale = 1.25
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4ftmi")
+}
+autoplay = "idle"

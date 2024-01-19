@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c387fro1kglks"]
+
+[ext_resource type="FontFile" uid="uid://bihcwse4178cm" path="res://assets/fonts/dogicapixel.ttf" id="1_0s3jq"]
+
+[resource]
+default_font = ExtResource("1_0s3jq")
+default_font_size = 0
+HeaderLarge/font_sizes/font_size = 16
+HeaderMedium/font_sizes/font_size = 8
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0.0901961, 0.0666667, 0.101961, 1)
+Label/constants/outline_size = 2
+Label/font_sizes/font_size = 8
