@@ -20,6 +20,7 @@ func _notification(what):
 	if OS.get_name() != "Web":
 		return
 	
+	# BUG: FOCUS_IN and FOCUS_OUT do not get detected when switching tabs
 	if what == MainLoop.NOTIFICATION_APPLICATION_FOCUS_IN:
 		Music.instance.stream_paused = false
 	elif what == MainLoop.NOTIFICATION_APPLICATION_FOCUS_OUT:
