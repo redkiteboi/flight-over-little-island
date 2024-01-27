@@ -5,7 +5,7 @@
 ## 🛩️ About
 
 It's that time of the year again.
-Little Island's annual balloon festival is about to start. Jump into your propellor plane and soar to the skies!
+Little Island's annual balloon festival is about to start. Jump into your propeller plane and soar to the skies!
 Your goal? Help Arthur the Otter pop as many balloons as you can.
 How? By shooting them with cherry pits of course.
 
